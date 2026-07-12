@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegan's Huambaló | Catálogo</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Importamos PapaParse -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        :root {
+            --azul-elegans: #111524; 
+            --amarillo-elegans: #fcd705; 
+            --fondo-claro: #f8f9fc;
+            --texto-oscuro: #2b2b2b;
+            --texto-gris: #666666;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--fondo-claro);
+            color: var(--texto-oscuro);
+        }
+
+        header {
+            background-color: var(--azul-elegans);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: 6px solid var(--amarillo-elegans);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            /* Añadido position: relative para anclar el botón de contacto */
+            position: relative; 
+        }
+
+        /* --- NUEVO ESTILO DEL BOTÓN DE CONTACTO FLOTANTE --- */
+        .btn-contacto-header {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background-color: var(--amarillo-elegans);
+            color: var(--texto-oscuro);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background-color 0.2s;
+            z-index: 10;
+        }
+
+        .btn-contacto-header:hover {
+            transform: scale(1.05);
+            background-color: #e5c300;
+        }
+
+        @media (max-width: 600px) {
+            .btn-contacto-header {
+                top: 15px;
+                right: 15px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+        /* --------------------------------------------------- */
+
+        .logo-container { margin-bottom: 15px; }
+        .logo-img {
+            width: 150px; height: 150px; border-radius: 50%;
+            object-fit: contain; box-shadow: 0 0 20px rgba(252, 215, 5, 0.15);
+        }
+        header h1 { margin: 0; font-size: 2.2rem; color: var(--amarillo-elegans); font-weight: 700; letter-spacing: 2px; }
+        header p { margin: 8px 0 0 0; font-weight: 300; font-size: 1rem; letter-spacing: 5px; text-transform: uppercase; }
+
+        .filtros-container {
+            display: flex; justify-content: center; gap: 15px; margin: 30px auto 0; flex-wrap: wrap; padding: 0 20px;
+        }
+        .btn-filtro {
+            background-color: white; color: var(--azul-elegans); border: 2px solid var(--azul-elegans);
+            padding: 10px 20px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.9rem;
+            border-radius: 25px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-filtro:hover, .btn-filtro.activo {
+            background-color: var(--azul-elegans); color: var(--amarillo-elegans);
+        }
+
+        .catalogo-container {
+            max-width: 1200px; margin: 40px auto 50px; padding: 0 20px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px;
+        }
+
+        .oculto { display: none !important; }
+
+        .tarjeta-mueble {
+            background-color: white; border-radius: 4px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform 0.4s ease, box-shadow 0.4s ease; border-bottom: 3px solid transparent;
+        }
+        .tarjeta-mueble:hover {
+            transform: translateY(-8px); box-shadow: 0 15px 35px rgba(17, 21, 36, 0.15); border-bottom: 3px solid var(--amarillo-elegans);
+        }
+        .mueble-imagen { width: 100%; height: 280px; object-fit: cover; background-color: #eee; }
+        .mueble-info { padding: 25px; }
+        .mueble-categoria { font-size: 0.75rem; color: var(--azul-elegans); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; display: block; }
+        .mueble-titulo { margin: 0 0 12px 0; font-size: 1.4rem; color: var(--azul-elegans); font-weight: 700; }
+        .mueble-descripcion { font-size: 0.95rem; color: var(--texto-gris); margin-bottom: 25px; line-height: 1.6; font-weight: 300; }
+        
+        .btn-whatsapp {
+            display: block; width: 100%; background-color: var(--azul-elegans); color: var(--amarillo-elegans);
+            border: 2px solid var(--azul-elegans); padding: 14px; text-align: center; font-size: 0.95rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease;
+        }
+        .btn-whatsapp:hover { background-color: var(--amarillo-elegans); color: var(--azul-elegans); border-color: var(--amarillo-elegans); }
+
+        .cargando { text-align: center; grid-column: 1 / -1; font-size: 1.2rem; color: var(--azul-elegans); font-weight: 500; }
+        .error-mensaje { text-align: center; grid-column: 1 / -1; color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- BOTÓN DE CONTACTO AÑADIDO (Con tu número integrado) -->
+        <a href="https://wa.me/593960896703?text=Hola%20Elegan's%20Huambaló,%20me%20gustaría%20hacer%20una%20consulta." target="_blank" class="btn-contacto-header">Contáctanos</a>
+
+        <div class="logo-container">
+            <img src="image_ec13d7.jpg" alt="Logo Elegan's Huambaló" class="logo-img">
+        </div>
+        <h1>ELEGAN'S HUAMBALÓ</h1>
+        <p>ELEGANCIA - CONFORT</p>
+    </header>
+
+    <!-- Este contenedor se llenará solo con los botones -->
+    <nav class="filtros-container" id="contenedor-filtros">
+        <!-- El JS llenará esto automáticamente -->
+    </nav>
+
+    <main class="catalogo-container" id="catalogo">
+        <div class="cargando">Cargando catálogo actualizado...</div>
+    </main>
+
+    <script>
+        // TUS DATOS INTEGRADOS
+        const urlGoogleSheets = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTIoswlMcQJOqR0VdVkkiv0xIBrUXzcAQ10iDDkL3VZ2l4WhHyLlmFbzBRtsnwoHGU0-fys9YKDgGRa/pub?gid=0&single=true&output=csv'; 
+        const numeroWhatsApp = '593960896703'; 
+
+        function cargarCatalogo() {
+            Papa.parse(urlGoogleSheets, {
+                download: true,
+                header: true, 
+                skipEmptyLines: true,
+                transformHeader: h => h.trim(),
+                complete: function(resultados) {
+                    const datos = resultados.data;
+                    const contenedor = document.getElementById('catalogo');
+                    const contenedorFiltros = document.getElementById('contenedor-filtros');
+                    contenedor.innerHTML = ''; 
+                    
+                    // 1. Obtener categorías únicas del Excel
+                    const categorias = ['Todos', ...new Set(datos.map(fila => fila.Categoria))];
+                    
+                    // 2. Generar botones dinámicamente
+                    contenedorFiltros.innerHTML = '';
+                    categorias.forEach(cat => {
+                        const btn = document.createElement('button');
+                        btn.className = `btn-filtro ${cat === 'Todos' ? 'activo' : ''}`;
+                        btn.textContent = cat;
+                        btn.onclick = () => filtrarCategoria(cat);
+                        contenedorFiltros.appendChild(btn);
+                    });
+                    
+                    // 3. Cargar los muebles
+                    datos.forEach(fila => {
+                        const { Titulo, Imagen, Categoria, Descripcion } = fila;
+                        if (Titulo && Imagen) {
+                            contenedor.innerHTML += `
+                                <article class="tarjeta-mueble" data-categoria="${Categoria}">
+                                    <img src="${Imagen}" alt="${Titulo}" class="mueble-imagen" onerror="this.src='https://via.placeholder.com/600x400?text=Imagen+No+Disponible'">
+                                    <div class="mueble-info">
+                                        <span class="mueble-categoria">${Categoria}</span>
+                                        <h2 class="mueble-titulo">${Titulo}</h2>
+                                        <p class="mueble-descripcion">${Descripcion || ''}</p>
+                                        <button class="btn-whatsapp">Cotizar Modelo</button>
+                                    </div>
+                                </article>
+                            `;
+                        }
+                    });
+                }
+            });
+        }
+
+        cargarCatalogo();
+
+        function filtrarCategoria(categoriaSeleccionada) {
+            const botones = document.querySelectorAll('.btn-filtro');
+            const muebles = document.querySelectorAll('.tarjeta-mueble');
+
+            botones.forEach(boton => {
+                boton.classList.remove('activo');
+                if (boton.textContent.trim().toLowerCase() === categoriaSeleccionada.toLowerCase() || 
+                   (categoriaSeleccionada === 'Todos' && boton.textContent.trim() === 'Todos')) {
+                    boton.classList.add('activo');
+                }
+            });
+
+            muebles.forEach(mueble => {
+                const categoriaMueble = mueble.getAttribute('data-categoria');
+                if (categoriaSeleccionada === 'Todos' || categoriaMueble === categoriaSeleccionada) {
+                    mueble.classList.remove('oculto');
+                } else {
+                    mueble.classList.add('oculto');
+                }
+            });
+        }
+
+        document.addEventListener('click', function(evento) {
+            if (evento.target.classList.contains('btn-whatsapp')) {
+                const tarjeta = evento.target.closest('.tarjeta-mueble');
+                const nombreMueble = tarjeta.querySelector('.mueble-titulo').textContent;
+                
+                const mensaje = `Hola Elegan's Huambaló. Me gustaría cotizar el modelo: *${nombreMueble}*. ¿Me podrían dar más información?`;
+                const mensajeFormateado = encodeURIComponent(mensaje);
+                const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeFormateado}`;
+                
+                window.open(linkWhatsApp, '_blank');
+            }
+        });
+    </script>
+</body>
+</html>
