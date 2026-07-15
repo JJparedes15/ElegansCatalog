@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elegan's Huambaló | Catálogo</title>
-    <meta name="description" content="Catálogo exclusivo de Elegan's Huambaló. Muebles de alta calidad, elegancia y confort para tu hogar. Cotiza directamente por WhatsApp.">
-    <meta name="keywords" content="muebles Huambaló, juego de sala, comedores modernos, dormitorios, Elegan's Huambaló, muebles Ecuador">
+    
+    <!-- === OPTIMIZACIÓN SEO BÁSICA === -->
+    <title>Elegan's Huambaló | Muebles de Madera de Alta Calidad en Ecuador</title>
+    <meta name="description" content="Somos fabricantes directos de muebles en Huambaló, Ecuador. Comedores, salas y dormitorios con diseños modernos y madera sólida. ¡Cotiza tu mueble personalizado aquí!">
+    <meta name="keywords" content="muebles Huambaló, fabrica de muebles Ecuador, juegos de sala, comedores de madera, dormitorios modernos, muebles a medida, Elegan's Huambaló">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://tudominio.com" /> <!-- Cambia esto por tu dominio real si lo tienes -->
+    
     <link rel="icon" type="image/png" href="favicon.png?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
     <style>
         :root {
             --azul-elegans: #111524; 
@@ -144,6 +149,15 @@
         }
         .cerrar-modal { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--texto-oscuro); }
         .cerrar-visor { position: absolute; top: 20px; right: 35px; color: white; font-size: 50px; cursor: pointer; }
+
+        /* --- SECCIÓN SEO FOOTER --- */
+        .seo-footer {
+            max-width: 1000px; margin: 40px auto; padding: 30px 20px;
+            text-align: center; border-top: 1px solid #ddd;
+        }
+        body.dark-mode .seo-footer { border-top: 1px solid #333; }
+        .seo-footer h3 { font-size: 1.1rem; color: var(--texto-oscuro); margin-bottom: 15px; font-weight: 700;}
+        .seo-footer p { font-size: 0.9rem; color: var(--texto-gris); line-height: 1.6; font-weight: 300;}
     </style>
 </head>
 <body>
@@ -167,9 +181,16 @@
 
     <nav class="filtros-container" id="contenedor-filtros"></nav>
 
+    <!-- La etiqueta main es semántica y le dice a Google "Aquí está lo importante" -->
     <main class="catalogo-container" id="catalogo">
-        <div style="text-align:center; grid-column: 1/-1;">Cargando...</div>
+        <div style="text-align:center; grid-column: 1/-1;">Cargando catálogo de muebles...</div>
     </main>
+
+    <!-- === TEXTO SEO PARA GOOGLE === -->
+    <footer class="seo-footer">
+        <h3>Fabricantes Directos de Muebles en Huambaló</h3>
+        <p>En <strong>Elegan's Huambaló</strong> nos especializamos en la fabricación y venta de muebles de madera sólida de la más alta calidad. Nuestro catálogo incluye desde modernos juegos de sala y elegantes comedores, hasta dormitorios diseñados para tu descanso. Orgullosamente elaborados en Huambaló, Ecuador, combinamos la tradición de nuestros artesanos con estilos contemporáneos para brindarte durabilidad, elegancia y confort. Realizamos cotizaciones a medida y envíos.</p>
+    </footer>
 
     <!-- Modal Carrito -->
     <div id="modal-carrito" class="modal-fondo oculto">
@@ -184,7 +205,7 @@
     <!-- Modal Imagen -->
     <div id="modal-visor" class="modal-fondo oculto">
         <span class="cerrar-visor" id="cerrar-visor">&times;</span>
-        <img class="modal-img-contenido" id="imagen-ampliada">
+        <img class="modal-img-contenido" id="imagen-ampliada" alt="Vista ampliada del mueble">
     </div>
 
     <script>
@@ -240,7 +261,7 @@
                 if (coincideCategoria && coincideBusqueda) {
                     contenedor.innerHTML += `
                         <article class="tarjeta-mueble">
-                            <img src="${Imagen}" alt="${Titulo}" class="mueble-imagen" onerror="this.src='https://via.placeholder.com/400x300?text=Sin+Imagen'">
+                            <img src="${Imagen}" alt="${Titulo} - Mueble de Huambaló" class="mueble-imagen" onerror="this.src='https://via.placeholder.com/400x300?text=Sin+Imagen'">
                             <div class="mueble-info">
                                 <span class="mueble-categoria">${Categoria}</span>
                                 <h2 class="mueble-titulo">${Titulo}</h2>
@@ -327,7 +348,6 @@
         const btnTema = document.getElementById('btn-tema');
         const btnContacto = document.getElementById('btn-contacto');
 
-        // Leer la memoria del navegador al cargar la página
         const isDarkModeGuardado = localStorage.getItem('eleganTheme') === 'dark';
         if (isDarkModeGuardado) {
             document.body.classList.add('dark-mode');
@@ -339,19 +359,15 @@
         btnTema.onclick = () => {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            
-            // Guardar la elección del cliente en su navegador
             localStorage.setItem('eleganTheme', isDark ? 'dark' : 'light');
-            
             btnTema.textContent = isDark ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
             menuOpciones.classList.remove('activo');
         };
 
-        // Lógica del botón de contacto
         btnContacto.onclick = () => {
-            let mensaje = "Hola Elegan's Huambaló";
+            let mensaje = "Hola Elegan's Huambaló, me gustaría recibir más información.";
             window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`, '_blank');
-            menuOpciones.classList.remove('activo'); // Cierra el menú después de hacer clic
+            menuOpciones.classList.remove('activo');
         };
 
         // INICIALIZAR
