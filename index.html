@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elegan's Huambaló | Catálogo</title>
-    
-<meta name="description" content="Catálogo exclusivo de Elegan's Huambaló. Muebles de alta calidad, elegancia y confort para tu hogar. Cotiza directamente por WhatsApp.">
-
-<meta name="keywords" content="muebles Huambalo, Huambalo, Guambalo, Elegans, muebles, juego de sala, comedores modernos, dormitorios, Elegans Huambalo, muebles Ecuador">
-
-<!-- Configuración para que los robots indexen la página -->
-<meta name="robots" content="index, follow">
+    <meta name="description" content="Catálogo exclusivo de Elegan's Huambaló. Muebles de alta calidad, elegancia y confort para tu hogar. Cotiza directamente por WhatsApp.">
+    <meta name="keywords" content="muebles Huambaló, juego de sala, comedores modernos, dormitorios, Elegan's Huambaló, muebles Ecuador">
+    <meta name="robots" content="index, follow">
     <link rel="icon" type="image/png" href="favicon.png?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -21,293 +17,345 @@
             --fondo-claro: #f8f9fc;
             --texto-oscuro: #2b2b2b;
             --texto-gris: #666666;
+            --bg-tarjeta: #ffffff;
+        }
+
+        /* --- MODO OSCURO VARIABLES --- */
+        body.dark-mode {
+            --fondo-claro: #121212;
+            --texto-oscuro: #e0e0e0;
+            --texto-gris: #a0a0a0;
+            --bg-tarjeta: #1e1e1e;
+            --azul-elegans: #1c2331;
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background-color: var(--fondo-claro);
             color: var(--texto-oscuro);
+            transition: background-color 0.3s, color 0.3s;
         }
 
+        /* --- HEADER Y MENÚ HAMBURGUESA --- */
         header {
-            background-color: var(--azul-elegans);
-            color: white;
-            text-align: center;
-            padding: 3rem 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-bottom: 6px solid var(--amarillo-elegans);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            position: relative; 
+            background-color: var(--azul-elegans); color: white; text-align: center;
+            padding: 3rem 1rem; display: flex; flex-direction: column; align-items: center;
+            border-bottom: 6px solid var(--amarillo-elegans); position: relative; 
         }
 
-        .btn-contacto-header {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            background-color: var(--amarillo-elegans);
-            color: var(--texto-oscuro);
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            transition: transform 0.2s, background-color 0.2s;
-            z-index: 10;
+        .menu-btn {
+            position: absolute; top: 15px; right: 20px; font-size: 28px; background: none;
+            border: none; color: white; cursor: pointer; z-index: 100;
         }
 
-        .btn-contacto-header:hover {
-            transform: scale(1.05);
-            background-color: #e5c300;
+        .menu-desplegable {
+            position: absolute; top: 60px; right: 20px; background: var(--bg-tarjeta);
+            border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: none;
+            flex-direction: column; overflow: hidden; z-index: 99; min-width: 150px;
         }
+        .menu-desplegable.activo { display: flex; }
+        .menu-item {
+            padding: 15px 20px; background: none; border: none; border-bottom: 1px solid #ddd;
+            color: var(--texto-oscuro); cursor: pointer; font-family: 'Montserrat'; font-weight: 500;
+            text-align: left; transition: background 0.2s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .menu-item:hover { background-color: rgba(252, 215, 5, 0.2); }
+        .menu-item:last-child { border-bottom: none; }
 
-        @media (max-width: 600px) {
-            .btn-contacto-header {
-                top: 15px;
-                right: 15px;
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-        }
+        .logo-img { width: 130px; height: 130px; border-radius: 50%; object-fit: contain; box-shadow: 0 0 20px rgba(252, 215, 5, 0.15); margin-bottom: 15px;}
+        header h1 { margin: 0; font-size: 2rem; color: var(--amarillo-elegans); font-weight: 700; letter-spacing: 2px; }
+        header p { margin: 8px 0 0 0; font-weight: 300; font-size: 0.9rem; letter-spacing: 5px; }
 
-        .logo-container { margin-bottom: 15px; }
-        .logo-img {
-            width: 150px; height: 150px; border-radius: 50%;
-            object-fit: contain; box-shadow: 0 0 20px rgba(252, 215, 5, 0.15);
+        /* --- BUSCADOR Y CARRITO FLOTANTE --- */
+        .herramientas-top {
+            max-width: 1200px; margin: 20px auto 0; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
         }
-        header h1 { margin: 0; font-size: 2.2rem; color: var(--amarillo-elegans); font-weight: 700; letter-spacing: 2px; }
-        header p { margin: 8px 0 0 0; font-weight: 300; font-size: 1rem; letter-spacing: 5px; text-transform: uppercase; }
+        .buscador-input {
+            flex-grow: 1; max-width: 400px; padding: 12px 20px; border-radius: 25px;
+            border: 2px solid var(--azul-elegans); background: var(--bg-tarjeta); color: var(--texto-oscuro);
+            font-family: 'Montserrat'; font-size: 1rem; outline: none;
+        }
+        .btn-carrito-flotante {
+            background-color: var(--amarillo-elegans); color: #111; border: none; font-weight: 700;
+            padding: 12px 25px; border-radius: 25px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 1rem; display: flex; align-items: center; gap: 8px; transition: transform 0.2s;
+        }
+        .btn-carrito-flotante:hover { transform: scale(1.05); }
 
-        .filtros-container {
-            display: flex; justify-content: center; gap: 15px; margin: 30px auto 0; flex-wrap: wrap; padding: 0 20px;
-        }
+        /* --- FILTROS Y CATÁLOGO --- */
+        .filtros-container { display: flex; justify-content: center; gap: 10px; margin: 20px auto; flex-wrap: wrap; padding: 0 20px; }
         .btn-filtro {
-            background-color: white; color: var(--azul-elegans); border: 2px solid var(--azul-elegans);
-            padding: 10px 20px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.9rem;
-            border-radius: 25px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+            background-color: var(--bg-tarjeta); color: var(--texto-oscuro); border: 2px solid var(--azul-elegans);
+            padding: 8px 16px; font-family: 'Montserrat'; font-weight: 700; font-size: 0.85rem;
+            border-radius: 20px; cursor: pointer; transition: all 0.3s; text-transform: uppercase;
         }
-        .btn-filtro:hover, .btn-filtro.activo {
-            background-color: var(--azul-elegans); color: var(--amarillo-elegans);
-        }
+        .btn-filtro:hover, .btn-filtro.activo { background-color: var(--azul-elegans); color: var(--amarillo-elegans); }
 
         .catalogo-container {
-            max-width: 1200px; margin: 40px auto 50px; padding: 0 20px;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px;
+            max-width: 1200px; margin: 30px auto 50px; padding: 0 20px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;
         }
 
         .oculto { display: none !important; }
 
         .tarjeta-mueble {
-            background-color: white; border-radius: 4px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform 0.4s ease, box-shadow 0.4s ease; border-bottom: 3px solid transparent;
+            background-color: var(--bg-tarjeta); border-radius: 8px; overflow: hidden; position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.3s; border-bottom: 3px solid transparent;
         }
-        .tarjeta-mueble:hover {
-            transform: translateY(-8px); box-shadow: 0 15px 35px rgba(17, 21, 36, 0.15); border-bottom: 3px solid var(--amarillo-elegans);
-        }
-        .mueble-imagen { 
-            width: 100%; height: 280px; object-fit: cover; background-color: #eee; 
-            cursor: zoom-in; /* Hace que el cursor sea una lupa */
-        }
-        .mueble-info { padding: 25px; }
-        .mueble-categoria { font-size: 0.75rem; color: var(--azul-elegans); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; display: block; }
-        .mueble-titulo { margin: 0 0 12px 0; font-size: 1.4rem; color: var(--azul-elegans); font-weight: 700; }
-        .mueble-descripcion { font-size: 0.95rem; color: var(--texto-gris); margin-bottom: 25px; line-height: 1.6; font-weight: 300; }
+        .tarjeta-mueble:hover { transform: translateY(-5px); border-bottom: 3px solid var(--amarillo-elegans); }
         
-        .btn-whatsapp {
-            display: block; width: 100%; background-color: var(--azul-elegans); color: var(--amarillo-elegans);
-            border: 2px solid var(--azul-elegans); padding: 14px; text-align: center; font-size: 0.95rem;
-            font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease;
-        }
-        .btn-whatsapp:hover { background-color: var(--amarillo-elegans); color: var(--azul-elegans); border-color: var(--amarillo-elegans); }
+        .mueble-imagen { width: 100%; height: 250px; object-fit: cover; cursor: zoom-in; }
 
-        .cargando { text-align: center; grid-column: 1 / -1; font-size: 1.2rem; color: var(--azul-elegans); font-weight: 500; }
-        .error-mensaje { text-align: center; grid-column: 1 / -1; color: #e74c3c; font-weight: bold; }
+        .mueble-info { padding: 20px; }
+        .mueble-categoria { font-size: 0.7rem; color: var(--azul-elegans); font-weight: 700; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        body.dark-mode .mueble-categoria { color: var(--amarillo-elegans); }
+        .mueble-titulo { margin: 0 0 10px 0; font-size: 1.3rem; color: var(--texto-oscuro); font-weight: 700; }
+        .mueble-descripcion { font-size: 0.9rem; color: var(--texto-gris); margin-bottom: 20px; line-height: 1.5; }
+        
+        .btn-add-carrito {
+            width: 100%; background-color: var(--azul-elegans); color: white; border: none; padding: 12px;
+            font-size: 0.9rem; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: background 0.3s;
+            border-radius: 4px;
+        }
+        .btn-add-carrito:hover { background-color: var(--amarillo-elegans); color: #111; }
 
-        /* --- NUEVOS ESTILOS DEL MODAL (VISOR DE IMÁGENES) --- */
-        .modal-visor {
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(17, 21, 36, 0.9); /* Azul oscuro de tu marca semi-transparente */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* --- MODALES (VISOR FOTOS Y CARRITO) --- */
+        .modal-fondo {
+            position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center;
         }
-        .modal-visor-contenido {
-            max-width: 90%;
-            max-height: 80vh; /* 80% del alto de la pantalla */
-            border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-            object-fit: contain; /* Evita que la imagen se deforme */
-            border: 3px solid var(--amarillo-elegans);
+        .modal-img-contenido { max-width: 90%; max-height: 85vh; border: 3px solid var(--amarillo-elegans); border-radius: 5px; }
+        
+        .modal-carrito-box {
+            background-color: var(--bg-tarjeta); padding: 30px; border-radius: 10px; width: 90%; max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; color: var(--texto-oscuro);
         }
-        .cerrar-visor {
-            position: absolute;
-            top: 20px;
-            right: 35px;
-            color: white;
-            font-size: 50px;
-            font-weight: 300;
-            cursor: pointer;
-            transition: color 0.3s;
+        .modal-carrito-box h2 { margin-top: 0; color: var(--texto-oscuro); }
+        .lista-carrito { list-style: none; padding: 0; margin-bottom: 20px; max-height: 250px; overflow-y: auto; }
+        .lista-carrito li { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+        .btn-eliminar-item { background: #e74c3c; color: white; border: none; border-radius: 3px; cursor: pointer; padding: 2px 8px;}
+        
+        .btn-enviar-ws {
+            width: 100%; background-color: #25D366; color: white; border: none; padding: 15px; font-size: 1rem;
+            font-weight: bold; border-radius: 5px; cursor: pointer;
         }
-        .cerrar-visor:hover {
-            color: var(--amarillo-elegans);
-        }
-        .titulo-visor {
-            margin-top: 15px;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 500;
-            text-align: center;
-            letter-spacing: 1px;
-        }
+        .cerrar-modal { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--texto-oscuro); }
+        .cerrar-visor { position: absolute; top: 20px; right: 35px; color: white; font-size: 50px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="https://wa.me/593960896703?text=Hola%20Elegan's%20Huambaló,%20me%20gustaría%20hacer%20una%20consulta." target="_blank" class="btn-contacto-header">Contáctanos</a>
-
-        <div class="logo-container">
-            <img src="image_ec13d7.jpg" alt="Logo Elegan's Huambaló" class="logo-img">
+        <button class="menu-btn" id="btn-menu">☰</button>
+        <div class="menu-desplegable" id="menu-opciones">
+            <button class="menu-item" id="btn-tema">🌙 Modo Oscuro</button>
+            <button class="menu-item" id="btn-contacto">📞 Contáctanos</button>
         </div>
+
+        <img src="image_ec13d7.jpg" alt="Logo" class="logo-img">
         <h1>ELEGAN'S HUAMBALÓ</h1>
         <p>ELEGANCIA - CONFORT</p>
     </header>
 
+    <div class="herramientas-top">
+        <input type="text" id="buscador" class="buscador-input" placeholder="Buscar mueble...">
+        <button class="btn-carrito-flotante" id="abrir-carrito">🛒 <span id="contador-carrito">0</span></button>
+    </div>
+
     <nav class="filtros-container" id="contenedor-filtros"></nav>
 
     <main class="catalogo-container" id="catalogo">
-        <div class="cargando">Cargando catálogo actualizado...</div>
+        <div style="text-align:center; grid-column: 1/-1;">Cargando...</div>
     </main>
 
-    <!-- --- NUEVO ESTRUCTURA HTML DEL MODAL --- -->
-    <div id="mi-modal" class="modal-visor oculto">
-        <span class="cerrar-visor">&times;</span>
-        <img class="modal-visor-contenido" id="imagen-ampliada">
-        <div class="titulo-visor" id="titulo-imagen-ampliada"></div>
+    <!-- Modal Carrito -->
+    <div id="modal-carrito" class="modal-fondo oculto">
+        <div class="modal-carrito-box">
+            <span class="cerrar-modal" id="cerrar-carrito">&times;</span>
+            <h2>Tu Pedido</h2>
+            <ul class="lista-carrito" id="items-carrito"></ul>
+            <button class="btn-enviar-ws" id="enviar-ws">Cotizar</button>
+        </div>
+    </div>
+
+    <!-- Modal Imagen -->
+    <div id="modal-visor" class="modal-fondo oculto">
+        <span class="cerrar-visor" id="cerrar-visor">&times;</span>
+        <img class="modal-img-contenido" id="imagen-ampliada">
     </div>
 
     <script>
         const urlGoogleSheets = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTIoswlMcQJOqR0VdVkkiv0xIBrUXzcAQ10iDDkL3VZ2l4WhHyLlmFbzBRtsnwoHGU0-fys9YKDgGRa/pub?gid=0&single=true&output=csv'; 
         const numeroWhatsApp = '593960896703'; 
+        let datosGlobales = [];
 
+        /* --- CARGAR DATOS --- */
         function cargarCatalogo() {
             Papa.parse(urlGoogleSheets, {
-                download: true,
-                header: true, 
-                skipEmptyLines: true,
-                transformHeader: h => h.trim(),
+                download: true, header: true, skipEmptyLines: true, transformHeader: h => h.trim(),
                 complete: function(resultados) {
-                    const datos = resultados.data;
-                    const contenedor = document.getElementById('catalogo');
-                    const contenedorFiltros = document.getElementById('contenedor-filtros');
-                    contenedor.innerHTML = ''; 
-                    
-                    const categorias = ['Todos', ...new Set(datos.map(fila => fila.Categoria))];
-                    
-                    contenedorFiltros.innerHTML = '';
-                    categorias.forEach(cat => {
-                        const btn = document.createElement('button');
-                        btn.className = `btn-filtro ${cat === 'Todos' ? 'activo' : ''}`;
-                        btn.textContent = cat;
-                        btn.onclick = () => filtrarCategoria(cat);
-                        contenedorFiltros.appendChild(btn);
-                    });
-                    
-                    datos.forEach(fila => {
-                        const { Titulo, Imagen, Categoria, Descripcion } = fila;
-                        if (Titulo && Imagen) {
-                            contenedor.innerHTML += `
-                                <article class="tarjeta-mueble" data-categoria="${Categoria}">
-                                    <img src="${Imagen}" alt="${Titulo}" class="mueble-imagen" onerror="this.src='https://via.placeholder.com/600x400?text=Imagen+No+Disponible'">
-                                    <div class="mueble-info">
-                                        <span class="mueble-categoria">${Categoria}</span>
-                                        <h2 class="mueble-titulo">${Titulo}</h2>
-                                        <p class="mueble-descripcion">${Descripcion || ''}</p>
-                                        <button class="btn-whatsapp">Cotizar Modelo</button>
-                                    </div>
-                                </article>
-                            `;
-                        }
-                    });
+                    datosGlobales = resultados.data;
+                    renderizarFiltros();
+                    renderizarMuebles();
                 }
             });
         }
 
-        cargarCatalogo();
-
-        function filtrarCategoria(categoriaSeleccionada) {
-            const botones = document.querySelectorAll('.btn-filtro');
-            const muebles = document.querySelectorAll('.tarjeta-mueble');
-
-            botones.forEach(boton => {
-                boton.classList.remove('activo');
-                if (boton.textContent.trim().toLowerCase() === categoriaSeleccionada.toLowerCase() || 
-                   (categoriaSeleccionada === 'Todos' && boton.textContent.trim() === 'Todos')) {
-                    boton.classList.add('activo');
-                }
+        function renderizarFiltros() {
+            const contenedorFiltros = document.getElementById('contenedor-filtros');
+            const categorias = ['Todos', ...new Set(datosGlobales.map(f => f.Categoria))];
+            contenedorFiltros.innerHTML = '';
+            
+            categorias.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `btn-filtro ${cat === 'Todos' ? 'activo' : ''}`;
+                btn.textContent = cat;
+                btn.dataset.categoria = cat;
+                
+                btn.onclick = () => {
+                    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
+                    btn.classList.add('activo');
+                    document.getElementById('buscador').value = ''; 
+                    filtrarMuebles(cat, '');
+                };
+                contenedorFiltros.appendChild(btn);
             });
+        }
 
-            muebles.forEach(mueble => {
-                const categoriaMueble = mueble.getAttribute('data-categoria');
-                if (categoriaSeleccionada === 'Todos' || categoriaMueble === categoriaSeleccionada) {
-                    mueble.classList.remove('oculto');
-                } else {
-                    mueble.classList.add('oculto');
+        function renderizarMuebles(categoriaFiltro = 'Todos', busqueda = '') {
+            const contenedor = document.getElementById('catalogo');
+            contenedor.innerHTML = ''; 
+
+            datosGlobales.forEach(fila => {
+                const { Titulo, Imagen, Categoria, Descripcion } = fila;
+                if (!Titulo || !Imagen) return;
+
+                const coincideCategoria = categoriaFiltro === 'Todos' || Categoria === categoriaFiltro;
+                const coincideBusqueda = Titulo.toLowerCase().includes(busqueda.toLowerCase()) || 
+                                         (Descripcion && Descripcion.toLowerCase().includes(busqueda.toLowerCase()));
+
+                if (coincideCategoria && coincideBusqueda) {
+                    contenedor.innerHTML += `
+                        <article class="tarjeta-mueble">
+                            <img src="${Imagen}" alt="${Titulo}" class="mueble-imagen" onerror="this.src='https://via.placeholder.com/400x300?text=Sin+Imagen'">
+                            <div class="mueble-info">
+                                <span class="mueble-categoria">${Categoria}</span>
+                                <h2 class="mueble-titulo">${Titulo}</h2>
+                                <p class="mueble-descripcion">${Descripcion || ''}</p>
+                                <button class="btn-add-carrito" onclick="agregarAlCarrito('${Titulo}')">Añadir al Carrito</button>
+                            </div>
+                        </article>
+                    `;
                 }
             });
         }
 
-        // VARIABLES DEL MODAL
-        const modal = document.getElementById("mi-modal");
-        const imgAmpliada = document.getElementById("imagen-ampliada");
-        const tituloAmpliado = document.getElementById("titulo-imagen-ampliada");
-        const btnCerrar = document.querySelector(".cerrar-visor");
-
-        // EVENTO DE CLIC GLOBAL PARA BOTONES Y FOTOS
-        document.addEventListener('click', function(evento) {
-            // Si hacen clic en el botón de WhatsApp
-            if (evento.target.classList.contains('btn-whatsapp')) {
-                const tarjeta = evento.target.closest('.tarjeta-mueble');
-                const nombreMueble = tarjeta.querySelector('.mueble-titulo').textContent;
-                
-                const mensaje = `Hola Elegan's Huambaló. Me gustaría cotizar el modelo: *${nombreMueble}*. ¿Me podrían dar más información?`;
-                const mensajeFormateado = encodeURIComponent(mensaje);
-                const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeFormateado}`;
-                
-                window.open(linkWhatsApp, '_blank');
-            }
-            
-            // Si hacen clic en la IMAGEN del mueble
-            if (evento.target.classList.contains('mueble-imagen')) {
-                const srcImagen = evento.target.getAttribute('src');
-                const altTitulo = evento.target.getAttribute('alt');
-                
-                imgAmpliada.src = srcImagen;
-                tituloAmpliado.textContent = altTitulo;
-                modal.classList.remove('oculto'); // Muestra el modal
-            }
-            
-            // Si hacen clic fuera de la imagen ampliada (en el fondo oscuro) para cerrarla
-            if (evento.target === modal) {
-                modal.classList.add('oculto');
-            }
+        /* --- BUSCADOR EN TIEMPO REAL --- */
+        document.getElementById('buscador').addEventListener('input', (e) => {
+            const btnActivo = document.querySelector('.btn-filtro.activo');
+            const catActiva = btnActivo ? btnActivo.dataset.categoria : 'Todos';
+            renderizarMuebles(catActiva, e.target.value);
         });
 
-        // Evento para la "X" de cerrar
-        btnCerrar.onclick = function() {
-            modal.classList.add('oculto');
+        /* --- LÓGICA DEL CARRITO --- */
+        let carrito = [];
+        
+        function agregarAlCarrito(producto) {
+            carrito.push(producto);
+            document.getElementById('contador-carrito').textContent = carrito.length;
+            const btnCart = document.getElementById('abrir-carrito');
+            btnCart.style.transform = 'scale(1.2)';
+            setTimeout(() => btnCart.style.transform = 'scale(1)', 200);
         }
+
+        function eliminarDelCarrito(index) {
+            carrito.splice(index, 1);
+            document.getElementById('contador-carrito').textContent = carrito.length;
+            actualizarModalCarrito();
+        }
+
+        function actualizarModalCarrito() {
+            const lista = document.getElementById('items-carrito');
+            lista.innerHTML = '';
+            if (carrito.length === 0) {
+                lista.innerHTML = `<li>Carrito vacío</li>`;
+            } else {
+                carrito.forEach((item, index) => {
+                    lista.innerHTML += `<li>${item} <button class="btn-eliminar-item" onclick="eliminarDelCarrito(${index})">X</button></li>`;
+                });
+            }
+        }
+
+        document.getElementById('abrir-carrito').onclick = () => {
+            actualizarModalCarrito();
+            document.getElementById('modal-carrito').classList.remove('oculto');
+        };
+
+        document.getElementById('cerrar-carrito').onclick = () => {
+            document.getElementById('modal-carrito').classList.add('oculto');
+        };
+
+        document.getElementById('enviar-ws').onclick = () => {
+            if(carrito.length === 0) return alert("El carrito está vacío");
+            let mensaje = "Hola Elegan's Huambaló. Me gustaría cotizar este pedido a medida:\n\n";
+            carrito.forEach(item => mensaje += `- ${item}\n`);
+            mensaje += "\n¿Me podrían dar más información sobre las opciones de personalización?";
+            window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`, '_blank');
+        };
+
+        /* --- VISOR DE IMÁGENES --- */
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('mueble-imagen')) {
+                document.getElementById('imagen-ampliada').src = e.target.src;
+                document.getElementById('modal-visor').classList.remove('oculto');
+            }
+        });
+        document.getElementById('cerrar-visor').onclick = () => document.getElementById('modal-visor').classList.add('oculto');
+        
+        document.querySelectorAll('.modal-fondo').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if(e.target === modal) modal.classList.add('oculto');
+            });
+        });
+
+        /* --- MENÚ, MODO OSCURO Y CONTACTO --- */
+        const btnMenu = document.getElementById('btn-menu');
+        const menuOpciones = document.getElementById('menu-opciones');
+        const btnTema = document.getElementById('btn-tema');
+        const btnContacto = document.getElementById('btn-contacto');
+
+        // Leer la memoria del navegador al cargar la página
+        const isDarkModeGuardado = localStorage.getItem('eleganTheme') === 'dark';
+        if (isDarkModeGuardado) {
+            document.body.classList.add('dark-mode');
+            btnTema.textContent = '☀️ Modo Claro';
+        }
+
+        btnMenu.onclick = () => menuOpciones.classList.toggle('activo');
+
+        btnTema.onclick = () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            // Guardar la elección del cliente en su navegador
+            localStorage.setItem('eleganTheme', isDark ? 'dark' : 'light');
+            
+            btnTema.textContent = isDark ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
+            menuOpciones.classList.remove('activo');
+        };
+
+        // Lógica del botón de contacto
+        btnContacto.onclick = () => {
+            let mensaje = "Hola Elegan's Huambaló";
+            window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`, '_blank');
+            menuOpciones.classList.remove('activo'); // Cierra el menú después de hacer clic
+        };
+
+        // INICIALIZAR
+        cargarCatalogo();
     </script>
 </body>
 </html>
