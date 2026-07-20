@@ -208,7 +208,7 @@
         <img class="modal-img-contenido" id="imagen-ampliada" alt="Vista ampliada del mueble">
     </div>
 
-    <script>
+   <script>
         const urlGoogleSheets = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTIoswlMcQJOqR0VdVkkiv0xIBrUXzcAQ10iDDkL3VZ2l4WhHyLlmFbzBRtsnwoHGU0-fys9YKDgGRa/pub?gid=0&single=true&output=csv'; 
         const numeroWhatsApp = '593960896703'; 
         let datosGlobales = [];
@@ -218,7 +218,6 @@
             Papa.parse(urlGoogleSheets, {
                 download: true, header: true, skipEmptyLines: true, transformHeader: h => h.trim(),
                 complete: function(resultados) {
-                    // Limpiamos los datos de filas vacías
                     datosGlobales = resultados.data.filter(f => f.Titulo && f.Imagen);
                     renderizarFiltros();
                     renderizarMuebles();
@@ -228,8 +227,6 @@
 
         function renderizarFiltros() {
             const contenedorFiltros = document.getElementById('contenedor-filtros');
-            
-            // Obtenemos categorías únicas y limpiamos espacios
             const categoriasUnicas = [...new Set(datosGlobales.map(f => f.Categoria ? f.Categoria.trim() : 'Sin Categoría'))];
             const categorias = ['Todos', ...categoriasUnicas];
             
@@ -245,7 +242,7 @@
                     document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
                     btn.classList.add('activo');
                     document.getElementById('buscador').value = ''; 
-                    renderizarMuebles(cat, ''); // <--- AQUÍ ESTABA EL ERROR (CORREGIDO)
+                    renderizarMuebles(cat, ''); 
                 };
                 contenedorFiltros.appendChild(btn);
             });
@@ -274,7 +271,8 @@
                                 <span class="mueble-categoria">${catLimpia}</span>
                                 <h2 class="mueble-titulo">${Titulo}</h2>
                                 <p class="mueble-descripcion">${Descripcion || ''}</p>
-                                <button class="btn-add-carrito" onclick="agregarAlCarrito('${Titulo.replace(/'/g, "\\'")}')">Añadir al Carrito</button>
+                                <!-- AQUÍ ENVIAMOS AMBOS DATOS: TÍTULO Y CATEGORÍA -->
+                                <button class="btn-add-carrito" onclick="agregarAlCarrito('${Titulo.replace(/'/g, "\\'")}', '${catLimpia.replace(/'/g, "\\'")}')">Añadir al Carrito</button>
                             </div>
                         </article>
                     `;
@@ -296,8 +294,11 @@
         /* --- LÓGICA DEL CARRITO --- */
         let carrito = [];
         
-        function agregarAlCarrito(producto) {
-            carrito.push(producto);
+        // AHORA LA FUNCIÓN RECIBE TÍTULO Y CATEGORÍA
+        function agregarAlCarrito(titulo, categoria) {
+            // Guardamos un "objeto" con ambos datos en lugar de solo un texto
+            carrito.push({ titulo: titulo, categoria: categoria });
+            
             document.getElementById('contador-carrito').textContent = carrito.length;
             const btnCart = document.getElementById('abrir-carrito');
             btnCart.style.transform = 'scale(1.2)';
@@ -317,7 +318,8 @@
                 lista.innerHTML = `<li>Carrito vacío</li>`;
             } else {
                 carrito.forEach((item, index) => {
-                    lista.innerHTML += `<li>${item} <button class="btn-eliminar-item" onclick="eliminarDelCarrito(${index})">X</button></li>`;
+                    // MOSTRAMOS LA CATEGORÍA Y EL TÍTULO EN LA LISTA VISUAL
+                    lista.innerHTML += `<li><strong>[${item.categoria}]</strong> ${item.titulo} <button class="btn-eliminar-item" onclick="eliminarDelCarrito(${index})">X</button></li>`;
                 });
             }
         }
@@ -334,7 +336,12 @@
         document.getElementById('enviar-ws').onclick = () => {
             if(carrito.length === 0) return alert("El carrito está vacío");
             let mensaje = "Hola Elegan's Huambaló. Me gustaría cotizar este pedido a medida:\n\n";
-            carrito.forEach(item => mensaje += `- ${item}\n`);
+            
+            // ARMAMOS EL MENSAJE CON LA CATEGORÍA INCLUIDA
+            carrito.forEach(item => {
+                mensaje += `- Categoría: *${item.categoria}* | Modelo: ${item.titulo}\n`;
+            });
+            
             mensaje += "\n¿Me podrían dar más información sobre las opciones de personalización?";
             window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`, '_blank');
         };
