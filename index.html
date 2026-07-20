@@ -218,7 +218,8 @@
             Papa.parse(urlGoogleSheets, {
                 download: true, header: true, skipEmptyLines: true, transformHeader: h => h.trim(),
                 complete: function(resultados) {
-                    datosGlobales = resultados.data;
+                    // Limpiamos los datos de filas vacías
+                    datosGlobales = resultados.data.filter(f => f.Titulo && f.Imagen);
                     renderizarFiltros();
                     renderizarMuebles();
                 }
@@ -227,7 +228,11 @@
 
         function renderizarFiltros() {
             const contenedorFiltros = document.getElementById('contenedor-filtros');
-            const categorias = ['Todos', ...new Set(datosGlobales.map(f => f.Categoria))];
+            
+            // Obtenemos categorías únicas y limpiamos espacios
+            const categoriasUnicas = [...new Set(datosGlobales.map(f => f.Categoria ? f.Categoria.trim() : 'Sin Categoría'))];
+            const categorias = ['Todos', ...categoriasUnicas];
+            
             contenedorFiltros.innerHTML = '';
             
             categorias.forEach(cat => {
@@ -240,7 +245,7 @@
                     document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
                     btn.classList.add('activo');
                     document.getElementById('buscador').value = ''; 
-                    filtrarMuebles(cat, '');
+                    renderizarMuebles(cat, ''); // <--- AQUÍ ESTABA EL ERROR (CORREGIDO)
                 };
                 contenedorFiltros.appendChild(btn);
             });
@@ -250,28 +255,35 @@
             const contenedor = document.getElementById('catalogo');
             contenedor.innerHTML = ''; 
 
+            let contadorResultados = 0;
+
             datosGlobales.forEach(fila => {
                 const { Titulo, Imagen, Categoria, Descripcion } = fila;
-                if (!Titulo || !Imagen) return;
+                const catLimpia = Categoria ? Categoria.trim() : 'Sin Categoría';
 
-                const coincideCategoria = categoriaFiltro === 'Todos' || Categoria === categoriaFiltro;
+                const coincideCategoria = categoriaFiltro === 'Todos' || catLimpia.toLowerCase() === categoriaFiltro.toLowerCase();
                 const coincideBusqueda = Titulo.toLowerCase().includes(busqueda.toLowerCase()) || 
                                          (Descripcion && Descripcion.toLowerCase().includes(busqueda.toLowerCase()));
 
                 if (coincideCategoria && coincideBusqueda) {
+                    contadorResultados++;
                     contenedor.innerHTML += `
                         <article class="tarjeta-mueble">
                             <img src="${Imagen}" alt="${Titulo} - Mueble de Huambaló" class="mueble-imagen" onerror="this.src='https://via.placeholder.com/400x300?text=Sin+Imagen'">
                             <div class="mueble-info">
-                                <span class="mueble-categoria">${Categoria}</span>
+                                <span class="mueble-categoria">${catLimpia}</span>
                                 <h2 class="mueble-titulo">${Titulo}</h2>
                                 <p class="mueble-descripcion">${Descripcion || ''}</p>
-                                <button class="btn-add-carrito" onclick="agregarAlCarrito('${Titulo}')">Añadir al Carrito</button>
+                                <button class="btn-add-carrito" onclick="agregarAlCarrito('${Titulo.replace(/'/g, "\\'")}')">Añadir al Carrito</button>
                             </div>
                         </article>
                     `;
                 }
             });
+
+            if (contadorResultados === 0) {
+                contenedor.innerHTML = `<div style="text-align:center; grid-column: 1/-1; padding: 40px; color: var(--texto-gris);">No se encontraron muebles en esta categoría.</div>`;
+            }
         }
 
         /* --- BUSCADOR EN TIEMPO REAL --- */
