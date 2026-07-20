@@ -335,11 +335,11 @@
 
         document.getElementById('enviar-ws').onclick = () => {
             if(carrito.length === 0) return alert("El carrito está vacío");
-            let mensaje = "Hola Elegan's Huambaló. Me gustaría cotizar este pedido a medida:\n\n";
+            let mensaje = "Hola Elegan's Huambaló. Me gustaría cotizar este pedido:\n\n";
             
             // ARMAMOS EL MENSAJE CON LA CATEGORÍA INCLUIDA
             carrito.forEach(item => {
-                mensaje += `- Categoría: *${item.categoria}* | Modelo: ${item.titulo}\n`;
+                mensaje += `- *${item.categoria}* | Modelo: ${item.titulo}\n`;
             });
             
             mensaje += "\n¿Me podrían dar más información sobre las opciones de personalización?";
